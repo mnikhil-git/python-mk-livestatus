@@ -27,7 +27,6 @@ class Query(object):
     __call__ = call
 
     def __str__(self):
-        print self._resource
         if self._resource.upper() != 'SEND':
           request = 'GET %s' % (self._resource)
           if self._columns and any(self._columns):
@@ -39,7 +38,6 @@ class Query(object):
         else:
           timestamp = str(int(time.time()))
           request = "COMMAND [{0}] {1}\n".format(timestamp, ' '.join(self._command).encode('utf-8'))
-          print request
 
         return request
 
