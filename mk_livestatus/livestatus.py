@@ -38,7 +38,6 @@ class Query(object):
         else:
           timestamp = str(int(time.time()))
           request = "COMMAND [{0}] {1}\n".format(timestamp, ' '.join(self._command).encode('utf-8'))
-
         return request
 
     def columns(self, *args):
