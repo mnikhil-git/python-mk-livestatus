@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 
 import socket
 import json
-
+import time
 
 __all__ = ['Query', 'Socket']
 
@@ -27,13 +27,20 @@ class Query(object):
     __call__ = call
 
     def __str__(self):
-        request = 'GET %s' % (self._resource)
-        if self._columns and any(self._columns):
-            request += '\nColumns: %s' % (' '.join(self._columns))
-        if self._filters:
-            for filter_line in self._filters:
-                request += '\nFilter: %s' % (filter_line)
-        request += '\nOutputFormat: json\nColumnHeaders: on\n'
+        print self._resource
+        if self._resource.upper() != 'SEND':
+          request = 'GET %s' % (self._resource)
+          if self._columns and any(self._columns):
+              request += '\nColumns: %s' % (' '.join(self._columns))
+          if self._filters:
+              for filter_line in self._filters:
+                  request += '\nFilter: %s' % (filter_line)
+          request += '\nOutputFormat: json\nColumnHeaders: on\n'
+        else:
+          timestamp = str(int(time.time()))
+          request = "COMMAND [{0}] {1}\n".format(timestamp, ' '.join(self._command).encode('utf-8'))
+          print request
+
         return request
 
     def columns(self, *args):
@@ -44,6 +51,9 @@ class Query(object):
         self._filters.append(filter_str)
         return self
 
+    def command(self, command_str):
+        self._command.append(command_str)
+        return self
 
 class Socket(object):
     def __init__(self, peer):
