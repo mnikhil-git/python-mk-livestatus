@@ -16,6 +16,7 @@ class Query(object):
         self._resource = resource
         self._columns = []
         self._filters = []
+        self._command = []
 
     def call(self):
         try:
